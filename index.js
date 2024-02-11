@@ -32,6 +32,8 @@
         this.canvasHeight = 400;
         this.canvas = document.getElementById('work-canvas');
         this.canvasCtx = this.canvas.getContext('2d');
+        this.container = document.getElementById('container');
+        this.touchController = document.getElementById('touch-controller');
         this.imageToLoad = 3;
 
         this.yh = new YH(this.canvas);
@@ -117,9 +119,9 @@
 
             if (IS_MOBILE) {
                 // Mobile only touch devices.
-                // this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
-                // this.touchController.addEventListener(Runner.events.TOUCHEND, this);
-                // this.containerEl.addEventListener(Runner.events.TOUCHSTART, this);
+                this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
+                this.touchController.addEventListener(Runner.events.TOUCHEND, this);
+                this.container.addEventListener(Runner.events.TOUCHSTART, this);
             } else {
                 // Mouse.
                 document.addEventListener(Runner.events.MOUSEDOWN, this);
@@ -190,8 +192,8 @@
             if (IS_MOBILE && this.playing) {
                 e.preventDefault();
             }
-
-            if (e.keyCode == 87) { // w pressed
+            document.getElementById('text-space').innerHTML = 'Test...' + e.type;
+            if (e.keyCode == 87 || e.type == Runner.events.TOUCHSTART || e.type == Runner.events.MOUSEDOWN) { // w pressed
                 if (this.yh.inTheMoodToWork()) {
                     // change Runner status
                     if (this.status == Runner.status.INTRO || this.status == Runner.status.SUMMARY) {
@@ -251,7 +253,8 @@
          */
         onKeyUp: function (e) {
 
-            if (e.keyCode == 87 && this.yh.status == YH.status.WORK) { // w released
+            if ((e.keyCode == 87 || e.type == Runner.events.TOUCHEND || e.type == Runner.events.MOUSEUP) && 
+                this.yh.status == YH.status.WORK) { // w released
                 this.yh.setStatus(YH.status.RELAX);
             }
             // var keyCode = String(e.keyCode);
