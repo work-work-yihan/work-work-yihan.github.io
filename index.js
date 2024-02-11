@@ -119,9 +119,10 @@
 
             if (IS_MOBILE) {
                 // Mobile only touch devices.
-                this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
-                this.touchController.addEventListener(Runner.events.TOUCHEND, this);
+                // this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
+                // this.touchController.addEventListener(Runner.events.TOUCHEND, this);
                 this.container.addEventListener(Runner.events.TOUCHSTART, this);
+                this.container.addEventListener(Runner.events.TOUCHEND, this);
             } else {
                 // Mouse.
                 document.addEventListener(Runner.events.MOUSEDOWN, this);
@@ -252,7 +253,7 @@
          * @param {Event} e
          */
         onKeyUp: function (e) {
-
+            document.getElementById('text-space').innerHTML = 'Test...' + e.type;
             if ((e.keyCode == 87 || e.type == Runner.events.TOUCHEND || e.type == Runner.events.MOUSEUP) && 
                 this.yh.status == YH.status.WORK) { // w released
                 this.yh.setStatus(YH.status.RELAX);
