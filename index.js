@@ -38,7 +38,7 @@
 
         this.yh = new YH(this.canvas);
         this.leader = new Leader(this.canvas);
-        document.getElementById('text-space').innerHTML = "Runner...";
+        document.getElementById('text-space').innerHTML = "Runner Loading...";
         this.loadImages();
     }
     window['Runner'] = Runner;
@@ -173,11 +173,13 @@
                     this.status = Runner.status.SUMMARY;
                     this.yh.setStatus(YH.status.CRY);
                     this.leader.setStatus(Leader.status.MAD);
-                    document.getElementById('text-space').innerHTML = 
-                        'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours';
                 } else {
                     // update difficuty
                     this.leader.updateDifficuty(Math.floor(this.runningTime / Runner.msPerHour));
+                }
+                if (this.status != Runner.status.INTRO) {
+                    document.getElementById('text-space').innerHTML = 
+                        'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours';
                 }
 
                 this.scheduleNextUpdate();
@@ -193,13 +195,14 @@
             if (IS_MOBILE && this.playing) {
                 e.preventDefault();
             }
-            document.getElementById('text-space').innerHTML = 'Test...' + e.type;
             if (e.keyCode == 87 || e.type == Runner.events.TOUCHSTART || e.type == Runner.events.MOUSEDOWN) { // w pressed
                 if (this.yh.inTheMoodToWork()) {
                     // change Runner status
                     if (this.status == Runner.status.INTRO || this.status == Runner.status.SUMMARY) {
                         this.status = Runner.status.PLAY;
-                        document.getElementById('text-space').innerHTML = 'Working...';
+                        // document.getElementById('text-space').innerHTML = 'Working...';
+                        // document.getElementById('text-space').innerHTML = 
+                        // 'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours';
                         this.leader.setStatus(Leader.status.ABSENT);
                         this.runningTime = 0;
                     } 
@@ -253,7 +256,6 @@
          * @param {Event} e
          */
         onKeyUp: function (e) {
-            document.getElementById('text-space').innerHTML = 'Test...' + e.type;
             if ((e.keyCode == 87 || e.type == Runner.events.TOUCHEND || e.type == Runner.events.MOUSEUP) && 
                 this.yh.status == YH.status.WORK) { // w released
                 this.yh.setStatus(YH.status.RELAX);
@@ -551,7 +553,6 @@
 })()
 
 function onDocumentLoad() {
-    document.getElementById('text-space').innerHTML = "Testing?...";
     new Runner();
 }
 
