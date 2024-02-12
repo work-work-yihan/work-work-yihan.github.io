@@ -178,8 +178,14 @@
                     this.leader.updateDifficuty(Math.floor(this.runningTime / Runner.msPerHour));
                 }
                 if (this.status != Runner.status.INTRO) {
-                    document.getElementById('text-space').innerHTML = 
-                        'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...';
+                    if (this.status == Runner.status.SUMMARY && this.yh.timeInCurrentStatus < this.yh.minCryTime) {
+                        document.getElementById('text-space').innerHTML = 
+                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...' +
+                            'Try again in ' + Math.round((this.yh.minCryTime - this.yh.timeInCurrentStatus) / 1000, 1) + 's.';
+                    } else {
+                        document.getElementById('text-space').innerHTML = 
+                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...';
+                    }
                 }
 
                 this.scheduleNextUpdate();
@@ -323,7 +329,7 @@
         this.timeInCurrentStatus = 0;
         this.maxWorkTime = 1500;
         this.minRelaxTime = 100;
-        this.minCryTime = 5000;
+        this.minCryTime = 3000;
         this.setStatus('RELAX')
     }
 
