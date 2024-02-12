@@ -33,7 +33,7 @@
         this.canvas = document.getElementById('work-canvas');
         this.canvasCtx = this.canvas.getContext('2d');
         this.container = document.getElementById('container');
-        // this.touchController = document.getElementById('touch-controller');
+        this.touchController = document.getElementById('touch-controller');
         this.imageToLoad = 3;
 
         this.yh = new YH(this.canvas);
@@ -119,8 +119,8 @@
 
             if (IS_MOBILE) {
                 // Mobile only touch devices.
-                // this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
-                // this.touchController.addEventListener(Runner.events.TOUCHEND, this);
+                this.touchController.addEventListener(Runner.events.TOUCHSTART, this);
+                this.touchController.addEventListener(Runner.events.TOUCHEND, this);
                 this.container.addEventListener(Runner.events.TOUCHSTART, this);
                 this.container.addEventListener(Runner.events.TOUCHEND, this);
             } else {
@@ -180,7 +180,7 @@
                 if (this.status != Runner.status.INTRO) {
                     if (this.status == Runner.status.SUMMARY && this.yh.timeInCurrentStatus < this.yh.minCryTime) {
                         document.getElementById('text-space').innerHTML = 
-                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...' +
+                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours... ' +
                             'Try again in ' + Math.round((this.yh.minCryTime - this.yh.timeInCurrentStatus) / 1000, 1) + 's.';
                     } else {
                         document.getElementById('text-space').innerHTML = 
