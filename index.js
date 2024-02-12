@@ -300,7 +300,7 @@
         },
 
         updateClock: function() {
-            var hour = this.runningTime / Runner.msPerHour;
+            var hour = 9 + this.runningTime / Runner.msPerHour;
             var handLength = 20;
             var ux = 252;
             var uy = 67;
