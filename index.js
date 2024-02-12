@@ -24,7 +24,7 @@
             return Runner.instance_;
         }
         Runner.instance_ = this;
-        Runner.msPerHour = 2000;
+        Runner.msPerHour = 5000;
         this.time = 0;
         this.runningTime = 0;
         this.playing = true;
