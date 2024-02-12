@@ -24,7 +24,7 @@
             return Runner.instance_;
         }
         Runner.instance_ = this;
-        Runner.msPerHour = 5000;
+        Runner.msPerHour = 2000;
         this.time = 0;
         this.runningTime = 0;
         this.playing = true;
@@ -33,7 +33,7 @@
         this.canvas = document.getElementById('work-canvas');
         this.canvasCtx = this.canvas.getContext('2d');
         this.container = document.getElementById('container');
-        this.touchController = document.getElementById('touch-controller');
+        // this.touchController = document.getElementById('touch-controller');
         this.imageToLoad = 3;
 
         this.yh = new YH(this.canvas);
@@ -179,7 +179,7 @@
                 }
                 if (this.status != Runner.status.INTRO) {
                     document.getElementById('text-space').innerHTML = 
-                        'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours';
+                        'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...';
                 }
 
                 this.scheduleNextUpdate();
@@ -388,7 +388,7 @@
                     break;
                 case YH.status.CRY:
                     this.frameStart = 9;
-                    this.frameEnd = 10;
+                    this.frameEnd = 11;
                     this.msPerFrame = 1000 / 7;
                     break;
             }
@@ -530,8 +530,8 @@
                 case Leader.status.MAD:
                     this.statusDuration = NaN;
                     this.frameStart = 5;
-                    this.frameEnd = 6;
-                    this.msPerFrame = 1000 / 14;
+                    this.frameEnd = 7;
+                    this.msPerFrame = 1000 / 21;
                     this.forward = true;
                     break;
             }
