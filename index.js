@@ -27,6 +27,7 @@
         Runner.msPerHour = 5000;
         this.time = 0;
         this.runningTime = 0;
+        this.catchFishTime = 0;
         this.playing = true;
         this.canvasWidth = 400;
         this.canvasHeight = 400;
@@ -105,7 +106,7 @@
 
         init: function() {
             this.status = Runner.status.INTRO;
-            document.getElementById('text-space').innerHTML = 'Start Working?';
+            document.getElementById('text-space').innerHTML = '開始工作?';
             this.startListening();
             this.update();
         },
@@ -157,6 +158,9 @@
                 this.canvasCtx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
                 if (this.status == Runner.status.PLAY) {
                     this.runningTime += deltaTime;
+                    if (this.yh.status == YH.status.RELAX) {
+                        this.catchFishTime += deltaTime;
+                    }
                 }
 
                 // draw background
@@ -178,13 +182,31 @@
                     this.leader.updateDifficuty(Math.floor(this.runningTime / Runner.msPerHour));
                 }
                 if (this.status != Runner.status.INTRO) {
-                    if (this.status == Runner.status.SUMMARY && this.yh.timeInCurrentStatus < this.yh.minCryTime) {
+                    var workHour = Math.round(this.runningTime * 10 / Runner.msPerHour) / 10;
+                    var catchFishHour = Math.round(this.catchFishTime * 10 / Runner.msPerHour) / 10;
+                    workHour = workHour.toFixed(1);
+                    catchFishHour = catchFishHour.toFixed(1);
+                    if (this.status == Runner.status.SUMMARY) {
+                        // var date = new Date();
+                        // var month = date.getMonth();
+                        // var day = date.getDate();
+                        var suffix = '';
+                        // if (month == 1 && day == 13 && (this.runningTime / Runner.msPerHour) > 8.5) {
+                        //     suffix = 'Try again in ' + Math.round((this.yh.minCryTime - this.yh.timeInCurrentStatus) / 1000, 1) + 's.';
+                        //     // 'Happy Birthday! ';
+                        // } 
+                        if (this.yh.timeInCurrentStatus < this.yh.minCryTime) {
+                            var retrySecond = Math.round((this.yh.minCryTime - this.yh.timeInCurrentStatus) / 100) / 10;
+                            retrySecond = retrySecond.toFixed(1);
+                            suffix = retrySecond + ' 秒後再試。';
+                        }
                         document.getElementById('text-space').innerHTML = 
-                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours... ' +
-                            'Try again in ' + Math.round((this.yh.minCryTime - this.yh.timeInCurrentStatus) / 1000, 1) + 's.';
+                            '今日工作 ' + workHour + ' 小時，' + 
+                            '摸魚 ' + catchFishHour + ' 小時。' + suffix;
                     } else {
                         document.getElementById('text-space').innerHTML = 
-                            'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours...';
+                            '今日工作 ' + workHour + ' 小時，' + 
+                            '摸魚 ' + catchFishHour + ' 小時。';
                     }
                 }
 
@@ -211,6 +233,7 @@
                         // 'You survived work for ' + Math.floor(this.runningTime / Runner.msPerHour) + ' hours';
                         this.leader.setStatus(Leader.status.ABSENT);
                         this.runningTime = 0;
+                        this.catchFishTime = 0;
                     } 
                     // change yh status
                     this.yh.setStatus(YH.status.WORK);
@@ -329,7 +352,7 @@
         this.timeInCurrentStatus = 0;
         this.maxWorkTime = 1500;
         this.minRelaxTime = 100;
-        this.minCryTime = 3000;
+        this.minCryTime = 2130;
         this.setStatus('RELAX')
     }
 
@@ -552,7 +575,7 @@
             this.minPeepTime = Math.min(1000, 800 + 10 * hour);
             this.maxPeepTime = Math.min(1200, 1000 + 10 * hour);
             this.minAbsentTime = Math.max(200, 500 - 10 * hour);
-            this.maxAbsentTime = Math.max(1000, 1200 - 20 * hour);
+            this.maxAbsentTime = Math.max(1000, 2000 - 20 * hour);
         }
     };
 
